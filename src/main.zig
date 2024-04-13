@@ -40,35 +40,26 @@ fn print(n: comptime_int, board: *[n][n]bool) !void {
 }
 
 fn tick(n: comptime_int, curBoard: *[n][n]bool, nextBoard: *[n][n]bool) void {
-    if (n < 2) {
-        @panic("Unsupported board size, must be at least 2 by 2");
-    }
-    const lastIndex = n - 1;
-    for (0..lastIndex) |i| {
-        for (0..lastIndex) |j| {
-            var neighbours: []const bool = undefined;
-            if (i == 0) {
-                // Top edge
-                neighbours = switch (j) {
-                    0 => &[_]bool{ curBoard[0][1], curBoard[1][1], curBoard[1][0] },
-                    lastIndex => &[_]bool{ curBoard[0][lastIndex - 1], curBoard[1][lastIndex - 1], curBoard[1][lastIndex] },
-                    else => &[_]bool{ curBoard[0][j - 1], curBoard[1][j - 1], curBoard[1][j], curBoard[1][j + 1], curBoard[0][j + 1] },
-                };
-            } else if (i == lastIndex) {
-                // Bottom edge
-            } else if (j == 0) {
-                // Left edge
-            } else if (j == lastIndex) {
-                // Right edge
-            } else {
-                neighbours = &[_]bool{
-                    curBoard[i - 1][j - 1], curBoard[i - 1][j], curBoard[i - 1][j + 1],
-                    curBoard[i + 1][j - 1], curBoard[i + 1][j], curBoard[i + 1][j + 1],
-                    curBoard[i][j - 1],     curBoard[i][j + 1],
-                };
+    for (0..n - 1) |ii| {
+        const i: i128 = @intCast(ii);
+        for (0..n - 1) |jj| {
+            const j: i32 = @intCast(jj);
+            const neighbours = [_]std.meta.Tuple(&.{ i128, i128 }){
+                .{ i - 1, j - 1 }, .{ i - 1, j }, .{ i - 1, j + 1 },
+                .{ i + 1, j - 1 }, .{ i + 1, j }, .{ i + 1, j + 1 },
+                .{ i, j - 1 },     .{ i, j + 1 },
+            };
+            var liveCount: u128 = 0;
+            for (neighbours) |indices| {
+                if (indices[0] >= 0 and indices[0] < n and indices[1] >= 0 and indices[1] < n) {
+                    const ni: usize = @intCast(indices[0]);
+                    const nj: usize = @intCast(indices[1]);
+                    if (curBoard[ni][nj]) {
+                        liveCount += 1;
+                    }
+                }
             }
-            const livesCount = countTrues(neighbours);
-            nextBoard[i][j] = curBoard[i][j] and (livesCount == 2 or livesCount == 3) or livesCount == 3;
+            nextBoard[ii][jj] = curBoard[ii][jj] and (liveCount == 2 or liveCount == 3) or liveCount == 3;
         }
     }
 }
@@ -77,14 +68,4 @@ fn swap(T: anytype, p1: *T, p2: *T) void {
     const tmp = p1;
     p1.* = p2.*;
     p2.* = tmp.*;
-}
-
-fn countTrues(bs: []const bool) u8 {
-    var count: u8 = 0;
-    for (bs) |b| {
-        if (b) {
-            count += 1;
-        }
-    }
-    return count;
 }
