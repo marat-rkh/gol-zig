@@ -6,22 +6,21 @@ pub fn main() !void {
     var board1 = std.mem.zeroes([sz][sz]bool);
     var board2 = std.mem.zeroes([sz][sz]bool);
 
-    var currentBoard = &board1;
+    var curBoard = &board1;
     var nextBoard = &board2;
-    init(sz, currentBoard);
+    init(sz, curBoard);
     while (true) {
-        try print(sz, currentBoard);
+        try print(sz, curBoard);
         std.time.sleep(500 * std.time.ns_per_ms);
 
-        tick(sz, currentBoard, nextBoard);
-        swap(*[sz][sz]bool, &currentBoard, &nextBoard);
+        tick(sz, curBoard, nextBoard);
+        swap(*[sz][sz]bool, &curBoard, &nextBoard);
     }
 }
 
 fn init(n: comptime_int, board: *[n][n]bool) void {
     var prng = std.rand.DefaultPrng.init(0);
     const rand = prng.random();
-    // TODO try to use captures
     for (board) |*row| {
         for (row) |*cell| {
             cell.* = rand.boolean();
