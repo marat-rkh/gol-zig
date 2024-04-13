@@ -22,17 +22,17 @@ fn init(n: comptime_int, board: *[n][n]bool) void {
     var prng = std.rand.DefaultPrng.init(0);
     const rand = prng.random();
     // TODO try to use captures
-    for (board, 0..) |_, i| {
-        for (board, 0..) |_, j| {
-            board[i][j] = rand.boolean();
+    for (board) |*row| {
+        for (row) |*cell| {
+            cell.* = rand.boolean();
         }
     }
 }
 
 fn print(n: comptime_int, board: *[n][n]bool) !void {
-    for (board, 0..) |_, i| {
-        for (board, 0..) |_, j| {
-            const symbol = if (board[i][j]) "*" else "・";
+    for (board) |row| {
+        for (row) |cell| {
+            const symbol = if (cell) "*" else "・";
             try stdout.print("{s}", .{symbol});
         }
         try stdout.print("\n", .{});
