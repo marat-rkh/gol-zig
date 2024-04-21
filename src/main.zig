@@ -8,7 +8,7 @@ pub fn main() !void {
 
     var curBoard = &board1;
     var nextBoard = &board2;
-    init(sz, curBoard);
+    init(sz, curBoard, 1);
     try print(sz, curBoard);
 
     var steps: u16 = 0;
@@ -26,8 +26,8 @@ pub fn main() !void {
     }
 }
 
-fn init(n: comptime_int, board: *[n][n]bool) void {
-    var prng = std.rand.DefaultPrng.init(2);
+fn init(n: comptime_int, board: *[n][n]bool, seed: u64) void {
+    var prng = std.rand.DefaultPrng.init(seed);
     const rand = prng.random();
     for (board) |*row| {
         for (row) |*cell| {
