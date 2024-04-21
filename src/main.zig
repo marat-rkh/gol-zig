@@ -13,7 +13,7 @@ pub fn main() !void {
 
     var steps: u16 = 0;
     while (true) {
-        std.time.sleep(500 * std.time.ns_per_ms);
+        std.time.sleep(700 * std.time.ns_per_ms);
         tick(sz, curBoard, nextBoard);
         try print(sz, nextBoard);
         if (!eql(sz, curBoard, nextBoard)) {
@@ -39,7 +39,7 @@ fn init(n: comptime_int, board: *[n][n]bool, seed: u64) void {
 fn print(n: comptime_int, board: *[n][n]bool) !void {
     for (board) |row| {
         for (row) |cell| {
-            const symbol = if (cell) "*" else "・";
+            const symbol = if (cell) "*" else ".";
             try stdout.print("{s}", .{symbol});
         }
         try stdout.print("\n", .{});
