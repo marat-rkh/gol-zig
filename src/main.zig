@@ -16,12 +16,16 @@ pub fn main() !void {
         .{ false, false, false, false, false, false, false, false, false, false },
         .{ false, false, false, false, false, false, false, false, false, false },
     };
-    var board2 = std.mem.zeroes([sz][sz]bool);
-
     var curBoard = &board1;
-    var nextBoard = &board2;
-    init(sz, curBoard, 1);
+    for (std.os.argv) |arg| {
+        if (std.mem.eql(u8, std.mem.span(arg), "random")) {
+            init(sz, curBoard, 1);
+        }
+    }
     try print(sz, curBoard);
+
+    var board2 = std.mem.zeroes([sz][sz]bool);
+    var nextBoard = &board2;
 
     var steps: u16 = 0;
     while (true) {
