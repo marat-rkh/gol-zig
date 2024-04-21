@@ -3,7 +3,19 @@ const stdout = std.io.getStdOut().writer();
 
 pub fn main() !void {
     const sz = 10;
-    var board1 = std.mem.zeroes([sz][sz]bool);
+    // Example: glider
+    var board1: [sz][sz]bool = .{
+        .{ false, true, false, false, false, false, false, false, false, false },
+        .{ false, false, true, false, false, false, false, false, false, false },
+        .{ true, true, true, false, false, false, false, false, false, false },
+        .{ false, false, false, false, false, false, false, false, false, false },
+        .{ false, false, false, false, false, false, false, false, false, false },
+        .{ false, false, false, false, false, false, false, false, false, false },
+        .{ false, false, false, false, false, false, false, false, false, false },
+        .{ false, false, false, false, false, false, false, false, false, false },
+        .{ false, false, false, false, false, false, false, false, false, false },
+        .{ false, false, false, false, false, false, false, false, false, false },
+    };
     var board2 = std.mem.zeroes([sz][sz]bool);
 
     var curBoard = &board1;
