@@ -73,9 +73,9 @@ fn tick(n: comptime_int, curBoard: *[n][n]bool, nextBoard: *[n][n]bool) void {
 }
 
 fn swap(T: anytype, p1: *T, p2: *T) void {
-    const tmp = p1;
+    const tmp = p1.*;
     p1.* = p2.*;
-    p2.* = tmp.*;
+    p2.* = tmp;
 }
 
 fn eql(n: comptime_int, a: *[n][n]bool, b: *[n][n]bool) bool {
