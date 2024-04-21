@@ -48,9 +48,9 @@ fn print(n: comptime_int, board: *[n][n]bool) !void {
 }
 
 fn tick(n: comptime_int, curBoard: *[n][n]bool, nextBoard: *[n][n]bool) void {
-    for (0..n - 1) |ii| {
+    for (0..n) |ii| {
         const i: i128 = @intCast(ii);
-        for (0..n - 1) |jj| {
+        for (0..n) |jj| {
             const j: i32 = @intCast(jj);
             const neighbours = [_]std.meta.Tuple(&.{ i128, i128 }){
                 .{ i - 1, j - 1 }, .{ i - 1, j }, .{ i - 1, j + 1 },
